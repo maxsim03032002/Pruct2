@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/site.css}" rel="stylesheet" />
+    <div th:insert="blocks/header" ></div>
+</head>
+<body>
+<div class=ex1><h1>Должности сотрудников</h1></div>
+<table  border="1" class="styled-table">
+    <tr>
+        <th>Наименование должности</th>
+        <th>Оклад</th>
+        <th>Гендер</th>
+        <th>Дата создания должности</th>
+        <th>Вес должности</th>
+    </tr> <!--ряд с ячейками заголовков-->
+    <tr th:each="el : ${employersPositions}">
+        <td th:text="${el.positionName}"></td>
+        <td th:text="${el.salary}"></td>
+        <td th:text="${el.gender}" ></td>
+        <td th:text="${el.birthday}"></td>
+        <td th:text="${el.weight}"></td>
+        <td><a th:href="'/employersPosition/' + ${el.id} + '/edit'" class="edit">Редактировать</a></td>
+        <td><a th:href="'/employersPosition/' + ${el.id} + '/remove'" class="delete">Удалить</a></td>
+    </tr>
+    <form method="post" th:action="${'/employersPosition/filter'}">
+        <tr th:each="el : ${result}"><td th:text="${el.positionName}"></td><td th:text="${el.salary}"></td><td th:text="${el.gender}" ></td><td th:text="${el.birthday}"></td><td th:text="${el.weight}"></td></tr>
+    </form>
+    <form th:action="${'/employersPosition/add'}"  method="post">
+        <tr>
+            <td><input type="text" name="positionName" placeholder="Наименование должности" ></td>
+            <td><input type="number" name="salary" placeholder="Оклад"></td>
+            <td><input type="checkbox" name="gender" placeholder="Вы мужчина?"></td>
+            <td><input type="date" name="birthday" placeholder="День создания должности"></td>
+            <td><input type="number" name="weight" placeholder="Вес должности"></td>
+            <td><button type="submit">Добавить должность</button></td>
+        </tr>
+    </form>
+</table>
+<p></p>
+<form method="post" th:each="el: ${employersPosition}" align="Center">
+    <h1>Редактирование</h1>
+    <br>
+    <input type="text" name="positionName" placeholder="Наименование должности" th:value="${el.positionName}">
+    <input type="number" name="salary" placeholder="Оклад" th:value="${el.salary}"></input>
+    <input type="checkbox" name="gender" placeholder="Для мужчин?" th:checked="${el.gender}">
+    <input type="date" name="birthday" placeholder="День создания должности" th:value="${el.birthday}">
+    <input type="number" name="weight" placeholder="Вес должности" th:value="${el.weight}">
+    <button type="submit">Изменить</button>
+</form>
+<p></p>
+</body>
+<footer>
+    <div th:insert="blocks/footer" ></div>
+</footer>
+</html>
+

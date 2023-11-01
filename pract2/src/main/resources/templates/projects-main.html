@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/site.css}" rel="stylesheet" />
+    <div th:insert="blocks/header" ></div>
+</head>
+<body>
+<div class=ex1><h1>Проекты</h1></div>
+<table  border="1" class="styled-table">
+    <tr>
+        <th>Сроки</th>
+        <th>Описание</th>
+        <th>Стоимость</th>
+        <th>Наименование проекта</th>
+        <th>Количество сотрудников</th>
+    </tr> <!--ряд с ячейками заголовков-->
+    <tr th:each="el : ${projects}">
+        <td th:text="${el.deadlines}"></td>
+        <td th:text="${el.description}"></td>
+        <td th:text="${el.cost}" ></td>
+        <td th:text="${el.projectName}"></td>
+        <td th:text="${el.employersCount}"></td>
+        <td><a th:href="'/project/' + ${el.id} + '/edit'" class="edit">Редактировать</a></td>
+        <td><a th:href="'/project/' + ${el.id} + '/remove'" class="delete">Удалить</a></td>
+    </tr>
+    <form method="post" th:action="${'/project/filter'}">
+        <tr th:each="el : ${result}"><td th:text="${el.deadlines}"></td><td th:text="${el.description}"></td><td th:text="${el.cost}" ></td><td th:text="${el.projectName}"></td><td th:text="${el.employersCount}"></td></tr>
+    </form>
+    <form th:action="${'/project/add'}"  method="post">
+        <tr>
+            <td><input type="date" name="deadlines" placeholder="Сроки выполнения" ></td>
+            <td><input type="text" name="description" placeholder="Описание"></td>
+            <td><input type="number" name="cost" placeholder="Стоимость проекта"></td>
+            <td><input type="text" name="projectName" placeholder="Наименование проекта"></td>
+            <td><input type="number" name="employersCount" placeholder="Количество сотрудников на проект"></td>
+            <td><button type="submit">Добавить проект</button></td>
+        </tr>
+    </form>
+</table>
+<p></p>
+<form method="post" th:each="el: ${project}" align="Center">
+    <h1>Редактирование</h1>
+    <br>
+    <input type="date" name="deadlines" placeholder="Сроки выполнения" th:value="${el.deadlines}">
+    <input type="text" name="description" placeholder="Описание" th:value="${el.description}"></input>
+    <input type="number" name="cost" placeholder="Стоимость проекта" th:checked="${el.cost}">
+    <input type="text" name="projectName" placeholder="Наименование проекта" th:value="${el.projectName}">
+    <input type="number" name="employersCount" placeholder="Количество сотрудников на проект" th:value="${el.employersCount}">
+    <button type="submit">Изменить</button>
+</form>
+<p></p>
+</body>
+<footer>
+    <div th:insert="blocks/footer" ></div>
+</footer>
+</html>
+

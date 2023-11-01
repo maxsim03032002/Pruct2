@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/css/site.css}" rel="stylesheet" />
+    <div th:insert="blocks/header" ></div>
+</head>
+<body>
+<div class=ex1><h1>Издательства</h1></div>
+<table  border="1" class="styled-table">
+    <tr>
+        <th>Названия издательств</th>
+        <th>Адрес</th>
+        <th>Номер телефона</th>
+        <th>Эл. посчта</th>
+        <th>Рейтинг</th>
+    </tr> <!--ряд с ячейками заголовков-->
+    <tr th:each="el : ${publishingHouses}">
+        <td th:text="${el.publishName}"></td>
+        <td th:text="${el.publishAddress}"></td>
+        <td th:text="${el.telephoneNumber}" ></td>
+        <td th:text="${el.email}"></td>
+        <td th:text="${el.rating}"></td>
+        <td><a th:href="'/publishingHouse/' + ${el.id} + '/edit'" class="edit">Редактировать</a></td>
+        <td><a th:href="'/publishingHouse/' + ${el.id} + '/remove'" class="delete">Удалить</a></td>
+    </tr>
+    <form method="post" th:action="${'/publishingHouse/filter'}">
+        <tr th:each="el : ${result}"><td th:text="${el.publishName}"></td><td th:text="${el.publishAddress}"></td><td th:text="${el.telephoneNumber}" ></td><td th:text="${el.email}"></td><td th:text="${el.rating}"></td></tr>
+    </form>
+    <form th:action="${'/publishingHouse/add'}"  method="post">
+        <tr>
+            <td><input type="text" name="publishName" placeholder="Введите Название" ></td>
+            <td><input type="text" name="publishAddress" placeholder="Адрес"></td>
+            <td><input type="number" name="telephoneNumber" placeholder="Номер телефона"></td>
+            <td><input type="text" name="email" placeholder="Эл почта"></td>
+            <td><input type="number" name="rating" placeholder="Рейтинг"></td>
+            <td><button type="submit">Добавить издательство</button></td>
+        </tr>
+    </form>
+</table>
+<p></p>
+<form method="post" th:each="el: ${publishingHouse}" align="Center">
+    <h1>Редактирование</h1>
+    <br>
+    <input type="text" name="publishName" placeholder="Введите Название" th:value="${el.publishName}">
+    <input type="text" name="publishAddress" placeholder="Адрес" th:value="${el.publishAddress}"></input>
+    <input type="number" name="telephoneNumber" placeholder="Номер телефона" th:checked="${el.telephoneNumber}">
+    <input type="text" name="email" placeholder="Почта" th:value="${el.email}">
+    <input type="number" name="rating" placeholder="Рейтинг" th:value="${el.rating}">
+    <button type="submit">Изменить</button>
+</form>
+<p></p>
+</body>
+<footer>
+    <div th:insert="blocks/footer" ></div>
+</footer>
+</html>
+
